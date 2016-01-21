@@ -42,16 +42,10 @@ public class Hypersudoku {
         int idx = 0;
         int n,i;
         int x,y;
-        int maxlevel = -1;
-        
+
         while( 0 <= idx && idx < search_space.size() )
         {
             i = search_space.get(idx);
-            
-            if( idx > maxlevel ){
-                maxlevel = idx;
-                System.out.println(maxlevel);
-            }
 
             x = i % width;
             y = i / width;
@@ -60,8 +54,6 @@ public class Hypersudoku {
             board.remove(x,y);
             do {
                 ++ n;
-//                System.out.println(i + " " + n);
-//                board.print();
             }
             while( n <=9 && !board.putIn(n,x,y) );
 
