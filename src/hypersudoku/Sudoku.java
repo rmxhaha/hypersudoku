@@ -20,6 +20,7 @@ public class Sudoku {
         vfill = new boolean[width][10];
         hfill = new boolean[height][10];
         bfill = new boolean[3][3][10];
+        sbfill = new boolean[4][10];
         
         for( int i = 0; i < width; ++ i)
             Arrays.fill(vfill[i], false);
@@ -29,6 +30,8 @@ public class Sudoku {
         for( int i = 0; i < 3; ++ i)
             for( int k = 0; k < 3; ++ k )
                 Arrays.fill(bfill[i][k],false);
+        for( int i = 0; i < 4; ++ i )
+            Arrays.fill(sbfill[i], false);
         
         Arrays.fill( boardfill, false );
         Arrays.fill( boardnum, 0 );
@@ -62,6 +65,11 @@ public class Sudoku {
         // 3x3 white block check
         if( bfill[x/3][y/3][v] ) return false;
         
+        // 3x3 special block check
+        int sbidx = getSbIdx(x,y);
+        if( sbidx != -1 )
+            if( sbfill[sbidx][v] ) return false;
+        
         return true;
     }
     
@@ -83,7 +91,10 @@ public class Sudoku {
         hfill[y][v] = false;
         vfill[x][v] = false;
         bfill[x/3][y/3][v] = false;
-
+        int sbidx = getSbIdx(x,y);
+        if( sbidx != -1 )
+            sbfill[sbidx][v] = false;
+        
         return true;
     }
     
@@ -132,6 +143,35 @@ public class Sudoku {
         hfill[y][v] = true;
         vfill[x][v] = true;
         bfill[x/3][y/3][v] = true;
+        int sbidx = getSbIdx(x,y);
+        if( sbidx != -1 )
+            sbfill[sbidx][v] = true;
+    }
+    
+    private int getSbIdx( int x, int y){
+        if( 1 <= x && x <= 3 ){
+            if( 1 <= y && y <= 3 ){
+                // sb 0
+                return 0;
+            }
+            else if( 5 <= y && y <= 7 ){
+                // sb 1 
+                return 1;
+            }
+        }
+        else if( 5 <= x && x <= 7 ){
+            if( 1 <= y && y <= 3 ){
+                // sb 2
+                return 2;
+            }
+            else if( 5 <= y && y <= 7 ){
+                // sb 3 
+                return 3;
+            }
+            
+        }
+        
+        return -1;
     }
     
     protected int boardnum[]; // which number is inside a cell
@@ -139,6 +179,7 @@ public class Sudoku {
     protected boolean hfill[][];
     protected boolean vfill[][];
     protected boolean bfill[][][];
+    protected boolean sbfill[][];
     static int width = 9;
     static int height = 9;
 }
