@@ -7,6 +7,7 @@ package hypersudoku;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Stack;
 
 /**
  *
@@ -16,6 +17,19 @@ public class Sudoku {
     public Sudoku(){
         boardnum = new int[ width * height ];
         boardfill = new boolean[ width * height ];
+        vfill = new boolean[width][10];
+        hfill = new boolean[height][10];
+        bfill = new boolean[3][3][10];
+        
+        for( int i = 0; i < width; ++ i)
+            Arrays.fill(vfill[i], false);
+
+        for( int i = 0; i < height; ++ i)
+            Arrays.fill(hfill[i], false);
+        for( int i = 0; i < 3; ++ i)
+            for( int k = 0; k < 3; ++ k )
+                Arrays.fill(bfill[i][k],false);
+        
         Arrays.fill( boardfill, false );
         Arrays.fill( boardnum, 0 );
     }
@@ -40,28 +54,13 @@ public class Sudoku {
         
         
         // horizontal check
-        for( int _x = 0; _x < width; ++ _x)
-            if( isFilled(_x,y) && getNum(_x,y) == v )
-                return false;
+        if( hfill[y][v] ) return false;
         
         // vertical check
-        for( int _y = 0; _y < height;++ _y )
-            if( isFilled(x,_y) && getNum(x,_y) == v )
-                return false;
+        if( vfill[x][v] ) return false;
         
         // 3x3 white block check
-        int bx = x / 3;
-        int by = y / 3;
-        for( int dx = 0; dx < 3; ++ dx ){
-            for( int dy = 0; dy < 3; ++ dy ){
-                int _x = bx * 3 + dx;
-                int _y = bx * 3 + dy;
-                
-                if( isFilled(_x,_y) && getNum(_x,_y) == v )
-                    return false;
-            }
-        }
-        
+        if( bfill[x/3][y/3][v] ) return false;
         
         return true;
     }
@@ -77,9 +76,13 @@ public class Sudoku {
     
     public boolean remove( int x, int y ){
         if( !isFilled(x,y)) return false;
-        
+
+        int v = boardnum[y*width+x];
         boardnum[y*width+x] = 0;
         boardfill[y*width+x] = false;
+        hfill[y][v] = false;
+        vfill[x][v] = false;
+        bfill[x/3][y/3][v] = false;
 
         return true;
     }
@@ -121,13 +124,21 @@ public class Sudoku {
         }
     }
     
+
+    
     private void setNum( int x, int y, int v){
         boardnum[y*width+x] = v;
         boardfill[y*width+x] = true;
+        hfill[y][v] = true;
+        vfill[x][v] = true;
+        bfill[x/3][y/3][v] = true;
     }
     
     protected int boardnum[]; // which number is inside a cell
     protected boolean boardfill[]; // is cell in the board filled yet or not
+    protected boolean hfill[][];
+    protected boolean vfill[][];
+    protected boolean bfill[][][];
     static int width = 9;
     static int height = 9;
 }
