@@ -8,6 +8,9 @@ package hypersudoku;
 import static hypersudoku.Sudoku.width;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  *
  * @author rmxhaha
@@ -20,15 +23,20 @@ public class Hypersudoku {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        File file = new File("tc1");
         Sudoku board = new Sudoku();
-        Scanner scanner = new Scanner(System.in);
-        
-        board.parseBare(scanner);
-        
-        fillBlank( board );
-        
-        board.print();        
+        try {
+            Scanner scanner = new Scanner(file);
+
+            board.parseBare(scanner);
+
+            fillBlank( board );
+
+            board.print();        
+        }
+        catch(FileNotFoundException e ){
+            e.printStackTrace();
+        }
     }
 
     public static void fillBlank( Sudoku board ){
