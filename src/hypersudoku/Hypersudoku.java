@@ -29,10 +29,16 @@ public class Hypersudoku {
             Scanner scanner = new Scanner(file);
 
             board.parseBare(scanner);
-
-            fillBlank( board );
-
-            board.print();        
+            
+            long startTime = System.currentTimeMillis();
+            int c = fillBlank( board );
+            long endTime = System.currentTimeMillis();
+            long dt = endTime - startTime;
+            
+            board.print();    
+            System.out.println("Jumlah assignment = " + c );
+            System.out.println("Execution Time = " + dt + "ms" );
+            
             scanner.close();
         }
         catch(FileNotFoundException e ){
@@ -40,7 +46,9 @@ public class Hypersudoku {
         }
     }
 
-    public static void fillBlank( Sudoku board ){
+    
+    // output jumlah assignment
+    public static int  fillBlank( Sudoku board ){
         ArrayList<Integer> search_space = new ArrayList<Integer>();
         for( int i = 0; i < board.width * board.height; ++ i )
             if( !board.isFilled(i%width, i/width))
@@ -50,9 +58,11 @@ public class Hypersudoku {
         int idx = 0;
         int n,i;
         int x,y;
-
+        
+        int c = 0;
         while( 0 <= idx && idx < search_space.size() )
         {
+            ++ c ;
             i = search_space.get(idx);
 
             x = i % width;
@@ -75,6 +85,8 @@ public class Hypersudoku {
         
         if( idx == -1 ) 
             System.out.println("solution not found");
+        
+        return c;
     }
     
 }
