@@ -25,13 +25,7 @@ public class Hypersudoku {
         
         board.print();        
     }
-    
-    public static void fillBlankR( Sudoku cboard, ArrayList<Integer> search_space, int idx ){
-        int k = search_space.get(idx);
-        
-        
-    }
-    
+
     public static void fillBlank( Sudoku board ){
         ArrayList<Integer> search_space = new ArrayList<Integer>();
         for( int i = 0; i < board.width * board.height; ++ i )
