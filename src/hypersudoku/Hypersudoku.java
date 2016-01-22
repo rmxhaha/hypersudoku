@@ -33,6 +33,7 @@ public class Hypersudoku {
             fillBlank( board );
 
             board.print();        
+            scanner.close();
         }
         catch(FileNotFoundException e ){
             e.printStackTrace();
