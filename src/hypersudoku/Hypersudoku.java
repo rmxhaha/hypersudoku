@@ -7,6 +7,7 @@ package hypersudoku;
 
 import static hypersudoku.Sudoku.width;
 import java.util.ArrayList;
+import java.util.Scanner;
 /**
  *
  * @author rmxhaha
@@ -21,6 +22,10 @@ public class Hypersudoku {
         // TODO code application logic here
         
         Sudoku board = new Sudoku();
+        Scanner scanner = new Scanner(System.in);
+        
+        board.parseBare(scanner);
+        
         fillBlank( board );
         
         board.print();        
